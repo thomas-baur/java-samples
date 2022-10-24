@@ -1,0 +1,9 @@
+= Java Samples for devonfw's java stack
+
+This repository contains the examples for the devonfw java stack.
+The examples show implementation details of suggestions in the documentation.
+You can use snippets or complete solutions from here via copy paste in your code.
+
+It's important to note, that the examples in this repository are not actively maintained.
+In case of examples that are outdated, feel free to create an issue to report it.
+We're always happy for any feedback and contribution.

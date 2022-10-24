@@ -1,0 +1,14 @@
+= OpenApi Example
+
+This example consists of a client that requests data from a server. Both server and client share the same OpenAPI specification as contract.
+
+- The server generates the interface from the OpenAPI spec.
+- The client generates the client-implementation from it.
+
+=== To try it out,
+
+1. Start the server -> link:./server/README[Server Readme]
+
+2. Start the client -> link:./client/README[Client Readme]
+
+The client will request data from the server and log it in the console.

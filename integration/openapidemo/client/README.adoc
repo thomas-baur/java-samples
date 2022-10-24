@@ -1,0 +1,9 @@
+= OpenApi Client Plugin
+
+This example will show how to generate client code with the OpenApi Generator plugin
+
+== How to run the example
+
+1. Run maven `clean` and `generate-sources`
+2. Start the application
+3. Run tests
