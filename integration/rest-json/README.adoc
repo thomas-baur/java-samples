@@ -1,0 +1,29 @@
+= Json example
+
+This example is demonstrating how we can convert java object to json and json back to java object using jackson library. 
+
+It is covering below usecases:
+
+* Date and time handling
+* MOney handling
+* Inheritance 
+
+== How to build this example
+
+To build this application navigate to mts-json folder in commandline and execute below command:
+
+[source]
+--
+mvn clean install
+--
+
+== How to run this example
+
+If you run this application as SpringBootApp and tried to call rest services it will throw **NotImplementedException ** with message **Logic not implemented**.
+
+To test this example run test using mvn test:
+
+[source]
+--
+mvn test
+--

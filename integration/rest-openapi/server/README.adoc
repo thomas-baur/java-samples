@@ -1,0 +1,9 @@
+= OpenApi Server Plugin
+
+This example will show how to generate server code with the OpenApi Generator plugin
+
+== How to run the example
+
+1. Run maven `clean` and `compile`
+2. Start the application
+3. Run tests
