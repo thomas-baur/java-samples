@@ -1,0 +1,1 @@
+while true; do curl http://localhost:8080/service1; sleep 10s; done

@@ -1,0 +1,97 @@
+# This file serves as the agent configuration to interact with the
+# docker compose environment.
+#
+# You should pass the following command line flags when running the agent
+# locally and using this file:
+#
+#   -enable-features=integrations-next -config.expand-env -config.enable-read-api
+#
+# -enable-features=integrations-next is required as the file is configured for
+# the integrations revamp.
+#
+# -config.expand-env is required to expand environment variables. Environment
+# variables are used when running the agent inside of docker-compose to connect
+# to the other services. When running the agent externally, the expressions will
+# default to the appropriate values of the exposed ports.
+#
+# -config.enable-read-api is optional, but allows you to invoke the /-/config
+# endpoint to examine the generated config.
+
+server:
+  log_level: debug
+  http_listen_port: 12345
+
+#integrations:
+#  node_exporter:
+#    enabled: true
+#    rootfs_path: /host/root
+#    sysfs_path: /host/sys
+#    procfs_path: /host/proc
+
+logs:
+  configs:
+  - name: default
+    positions:
+      filename: /tmp/positions.yaml
+    scrape_configs:
+      - job_name: tracing-example
+        static_configs:
+          - targets: [localhost]
+            labels:
+              job: tracing-example
+              __path__: /tmp/tracing.log
+      - job_name: tomcat-access
+        static_configs:
+          - targets: [localhost]
+            labels:
+              job: tomcat-access
+              __path__: /tmp/access_log.log
+
+    clients:
+      - url: https://logs-prod-eu-west-0.grafana.net
+        basic_auth:
+          username: 323968
+#          password: eyJrIjoiQkNuN3A2MmxrdGNLTTFtWG9TeGt0OWwyNE9SS1dJZWoiLCJuIjoibG9ncyIsImlkIjoxfQ==
+          password: eyJrIjoiZDE1MWZjMDliNGViNDE5ZjVlNjkwNjAxYTU0ZDMxNDA5MWUxNGE4NiIsIm4iOiJsb2tpIiwiaWQiOjc0MzU1NH0=
+    target_config:
+      sync_period: 10s
+
+traces:
+  configs:
+  - name: default
+    automatic_logging:
+      backend: stdout
+      roots: true
+    remote_write:
+      - endpoint: tempo-eu-west-0.grafana.net:443
+        basic_auth:
+          username: 320481
+          password: eyJrIjoiOGNmYjdhMWE3ZGRmMWY5MzdmOTdmYTMxN2ZiNGI4ODRhZGU5OWM4ZiIsIm4iOiJ0ZW1wbyIsImlkIjo3NDM1NTR9
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+
+metrics:
+  configs:
+  - name: tracing-example
+    remote_write:
+    - basic_auth:
+        username: 649995
+        password: eyJrIjoiZWYxNTIxZGMwYTk1ZDcxNTdiYjEwNjdjNWI1NmZmMTk5YjYxMjE5OCIsIm4iOiJtZXRyaWNzIiwiaWQiOjc0MzU1NH0=
+      url: https://prometheus-prod-01-eu-west-0.grafana.net/api/prom
+    scrape_configs:
+    - job_name: tracing-example
+      scrape_interval: 10s
+      static_configs:
+      - targets:
+        - tracing-example:8080
+      metric_relabel_configs:
+        - source_labels: [ 'trace_id' ]
+          target_label: 'traceID'
+
+  global:
+    scrape_interval: 10s
+    external_labels:
+      monitor: tracing-example
+  wal_directory: /tmp/grafana-agent-wal

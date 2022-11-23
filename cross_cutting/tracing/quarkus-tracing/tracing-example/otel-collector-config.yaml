@@ -1,0 +1,41 @@
+receivers:
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: "tracing-example"
+          scrape_interval: 10s
+          metrics_path: '/actuator/prometheus'
+          static_configs:
+            - targets: [ "localhost:8080" ]
+  jaeger:
+    protocols:
+      thrift_compact:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: otel-collector:4317
+
+exporters:
+  jaeger:
+    endpoint: jaeger-all-in-one:14250
+    insecure: true
+  prometheus:
+    endpoint: localhost:9090
+  otlp:
+    #endpoint: tempo-us-central1.grafana.net:443
+    endpoint: localhost:3000
+
+
+processors:
+  batch:
+
+extensions:
+  health_check:
+
+service:
+  extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [jaeger]
